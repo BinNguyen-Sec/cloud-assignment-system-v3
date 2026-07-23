@@ -1,0 +1,20 @@
+sequenceDiagram
+    actor Teacher
+    participant UI as React Import Wizard
+    participant API as ASP.NET Core API
+    participant Parser as Excel Parser
+    participant DB as PostgreSQL
+    Teacher->>UI: Upload .xlsx
+    UI->>API: POST import-preview
+    API->>API: Verify ownership and file rules
+    API->>Parser: Parse and normalize rows
+    Parser-->>API: Parsed rows
+    API->>DB: Resolve users and enrollments in batches
+    DB-->>API: Matches
+    API->>DB: Save batch and preview outcomes
+    API-->>UI: Counts and paged preview
+    Teacher->>UI: Confirm valid rows
+    UI->>API: POST imports/{batchId}/confirm
+    API->>DB: Re-check and transactionally enroll
+    DB-->>API: Commit
+    API-->>UI: Final result and report link

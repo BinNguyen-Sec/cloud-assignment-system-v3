@@ -1,0 +1,15 @@
+erDiagram
+    USER ||--o{ COURSE : teaches
+    USER ||--o{ COURSE_MEMBER : enrolled_as
+    COURSE ||--o{ COURSE_MEMBER : contains
+    COURSE ||--o{ ASSIGNMENT : contains
+    USER ||--o{ ASSIGNMENT : creates
+    ASSIGNMENT ||--o| FILE_ASSET : instruction
+    ASSIGNMENT ||--o{ SUBMISSION : receives
+    USER ||--o{ SUBMISSION : submits
+    SUBMISSION ||--|| FILE_ASSET : stores
+    USER ||--o{ FILE_ASSET : uploads
+    COURSE ||--o{ STUDENT_IMPORT_BATCH : imports
+    USER ||--o{ STUDENT_IMPORT_BATCH : uploads
+    STUDENT_IMPORT_BATCH ||--o{ STUDENT_IMPORT_ROW : contains
+    USER ||--o{ AUDIT_LOG : acts
