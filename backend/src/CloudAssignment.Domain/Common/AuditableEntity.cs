@@ -2,6 +2,10 @@ namespace CloudAssignment.Domain.Common;
 
 public abstract class AuditableEntity : Entity
 {
+    protected AuditableEntity()
+    {
+    }
+
     protected AuditableEntity(Guid id, DateTimeOffset createdAtUtc)
         : base(id)
     {

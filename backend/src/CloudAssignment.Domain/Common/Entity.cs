@@ -2,6 +2,10 @@ namespace CloudAssignment.Domain.Common;
 
 public abstract class Entity
 {
+    protected Entity()
+    {
+    }
+
     protected Entity(Guid id)
     {
         if (id == Guid.Empty)
@@ -12,5 +16,5 @@ public abstract class Entity
         Id = id;
     }
 
-    public Guid Id { get; private init; }
+    public Guid Id { get; private set; }
 }

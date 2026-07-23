@@ -25,3 +25,8 @@ indent_size = 2
 
 [*.md]
 trim_trailing_whitespace = false
+
+# EF Core migrations and model snapshots are tool-generated.
+# Compile errors still apply, but maintainability analyzers are skipped.
+[**/Persistence/Migrations/*.cs]
+generated_code = true

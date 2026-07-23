@@ -1,3 +1,5 @@
+import type { UserRole } from '../features/auth/types/authTypes';
+
 export interface NavigationItem {
   label: string;
   description: string;
@@ -5,29 +7,33 @@ export interface NavigationItem {
   symbol: string;
 }
 
-export const foundationNavigation: NavigationItem[] = [
-  {
-    label: 'Nền tảng',
-    description: 'Kiến trúc và trạng thái hệ thống',
-    href: '/',
-    symbol: '✦',
-  },
-  {
-    label: 'Học phần',
-    description: 'Sẽ mở ở Phase Course Management',
-    href: '/',
-    symbol: '◈',
-  },
-  {
-    label: 'Bài tập',
-    description: 'Sẽ mở ở Phase Assignment',
-    href: '/',
-    symbol: '✧',
-  },
-  {
-    label: 'Bài nộp',
-    description: 'Sẽ mở ở Phase Submission',
-    href: '/',
-    symbol: '◇',
-  },
-];
+const navigationByRole: Record<UserRole, NavigationItem[]> = {
+  Admin: [
+    {
+      label: 'Tổng quan',
+      description: 'Trạng thái quản trị học viện',
+      href: '/admin/overview',
+      symbol: '✦',
+    },
+  ],
+  Teacher: [
+    {
+      label: 'Tổng quan',
+      description: 'Không gian giảng viên',
+      href: '/teacher/overview',
+      symbol: '✧',
+    },
+  ],
+  Student: [
+    {
+      label: 'Tổng quan',
+      description: 'Không gian sinh viên',
+      href: '/student/overview',
+      symbol: '◇',
+    },
+  ],
+};
+
+export function getNavigationForRole(role: UserRole): NavigationItem[] {
+  return navigationByRole[role];
+}

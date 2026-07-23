@@ -1,23 +1,86 @@
-$ErrorActionPreference = 'Stop'
+﻿$ErrorActionPreference = 'Stop'
+
+function Invoke-NativeCommand {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$FilePath,
+
+        [Parameter()]
+        [string[]]$ArgumentList = @(),
+
+        [Parameter(Mandatory = $true)]
+        [string]$StepName
+    )
+
+    Write-Host $StepName -ForegroundColor Cyan
+
+    & $FilePath @ArgumentList
+
+    $exitCode = $LASTEXITCODE
+
+    if ($exitCode -ne 0) {
+        throw "$StepName failed with exit code $exitCode."
+    }
+}
 
 $RepoRoot = Split-Path -Parent $PSScriptRoot
 Set-Location $RepoRoot
 
-Write-Host "Building backend..." -ForegroundColor Cyan
-dotnet build .\backend\CloudAssignment.sln --configuration Release
+Invoke-NativeCommand `
+    -FilePath 'dotnet' `
+    -ArgumentList @(
+        'list',
+        '.\backend\CloudAssignment.sln',
+        'package',
+        '--vulnerable',
+        '--include-transitive'
+    ) `
+    -StepName 'Auditing backend packages...'
 
-Write-Host "Testing backend..." -ForegroundColor Cyan
-dotnet test .\backend\CloudAssignment.sln --configuration Release --no-build
+Invoke-NativeCommand `
+    -FilePath 'dotnet' `
+    -ArgumentList @(
+        'build',
+        '.\backend\CloudAssignment.sln',
+        '--configuration',
+        'Release'
+    ) `
+    -StepName 'Building backend...'
 
-Write-Host "Checking frontend..." -ForegroundColor Cyan
+Invoke-NativeCommand `
+    -FilePath 'dotnet' `
+    -ArgumentList @(
+        'test',
+        '.\backend\CloudAssignment.sln',
+        '--configuration',
+        'Release',
+        '--no-build'
+    ) `
+    -StepName 'Testing backend...'
+
 Push-Location .\frontend\cloud-assignment-web
+
 try {
-    npm run typecheck
-    npm run test
-    npm run build
+    Invoke-NativeCommand `
+        -FilePath 'npm' `
+        -ArgumentList @('run', 'typecheck') `
+        -StepName 'Type-checking frontend...'
+
+    Invoke-NativeCommand `
+        -FilePath 'npm' `
+        -ArgumentList @('run', 'test') `
+        -StepName 'Testing frontend...'
+
+    Invoke-NativeCommand `
+        -FilePath 'npm' `
+        -ArgumentList @('run', 'build') `
+        -StepName 'Building frontend...'
 }
 finally {
     Pop-Location
 }
 
-Write-Host "All foundation quality gates passed." -ForegroundColor Green
+Write-Host ""
+Write-Host "All Phase 2 quality gates passed." `
+    -ForegroundColor Green

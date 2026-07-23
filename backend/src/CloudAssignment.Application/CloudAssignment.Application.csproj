@@ -6,6 +6,7 @@
     <ProjectReference Include="..\CloudAssignment.Domain\CloudAssignment.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
   </ItemGroup>
 </Project>

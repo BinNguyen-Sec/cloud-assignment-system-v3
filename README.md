@@ -1,64 +1,64 @@
 # Cloud Assignment System V3
 
-A clean rebuild of the cloud assignment platform using a pragmatic modular-monolith architecture and a bright **Modern Magical Academy** frontend.
+Clean, modular, cloud-native assignment platform with a bright Modern Magical Academy interface.
 
-## Technology baseline
+## Current checkpoint
 
-- Backend: ASP.NET Core on .NET 10 LTS
-- Frontend: React 19 + TypeScript + Vite
-- Database: PostgreSQL 16
-- Local orchestration: Docker Compose
-- Tests: xUnit and Vitest
-- CI: GitHub Actions
+**Phase 2 — Authentication complete**
 
-## Repository layout
+- .NET 10 modular backend
+- React 19 + TypeScript frontend
+- PostgreSQL 16 local database
+- JWT access tokens
+- rotating HttpOnly refresh tokens
+- BCrypt password hashing
+- Admin / Teacher / Student role policies
+- dedicated role overview routes
+- unit and integration tests
 
-```text
-backend/
-  src/
-    CloudAssignment.Domain/
-    CloudAssignment.Application/
-    CloudAssignment.Infrastructure/
-    CloudAssignment.Api/
-  tests/
-    CloudAssignment.UnitTests/
-    CloudAssignment.IntegrationTests/
-frontend/
-  cloud-assignment-web/
-docker/
-docs/
-scripts/
-.github/workflows/
-```
-
-## Quick start on Windows
-
-1. Install Git, .NET 10 SDK, Node.js 24 LTS, Docker Desktop, and VS Code.
-2. Open PowerShell in the repository.
-3. Run:
+## First run after extracting the Authentication Pack
 
 ```powershell
-Set-ExecutionPolicy -Scope Process Bypass
+cd C:\Users\PC\Downloads\cloud-assignment-system-v3
+Set-ExecutionPolicy -Scope Process Bypass -Force
 .\scripts\bootstrap.ps1
 ```
 
-4. Start the API:
+The script starts PostgreSQL, creates the local EF Core tool manifest, generates the `InitialIdentity` migration once, applies the schema, installs frontend packages, and executes all quality gates.
+
+## Run locally
+
+Terminal 1:
 
 ```powershell
 dotnet run --project .\backend\src\CloudAssignment.Api
 ```
 
-5. In another PowerShell window, start the frontend:
+Terminal 2:
 
 ```powershell
 cd .\frontend\cloud-assignment-web
 npm run dev
 ```
 
-- Frontend: `http://localhost:5173`
-- API: `http://localhost:8080`
-- Live health: `http://localhost:8080/health/live`
-- Ready health: `http://localhost:8080/health/ready`
-- OpenAPI JSON in Development: `http://localhost:8080/openapi/v1.json`
+Open `http://localhost:5173`.
 
-See `docs/SETUP_WINDOWS.md` for full instructions.
+With the API still running, verify the complete authentication flow:
+
+```powershell
+.\scripts\smoke-test-auth.ps1
+```
+
+## Local demo credentials
+
+```text
+admin@arcana.local   / Arcana@2026!
+teacher@arcana.local / Arcana@2026!
+student@arcana.local / Arcana@2026!
+```
+
+## Important
+
+- Commit the generated `Persistence/Migrations` files after bootstrap.
+- Never reuse the development JWT key or demo password in production.
+- V2 remains the rollback/demo backup until V3 passes complete regression.

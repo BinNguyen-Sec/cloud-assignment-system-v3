@@ -1,12 +1,21 @@
 import type { PropsWithChildren } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import type { NavigationItem } from '../app/navigation';
+import { useAuth } from '../features/auth/context/AuthContext';
 
 interface AcademyShellProps extends PropsWithChildren {
   navigation: NavigationItem[];
 }
 
 export function AcademyShell({ navigation, children }: AcademyShellProps) {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  async function handleLogout() {
+    await logout();
+    navigate('/login', { replace: true });
+  }
+
   return (
     <div className="academy-shell">
       <aside className="academy-sidebar" aria-label="Điều hướng chính">
@@ -17,45 +26,34 @@ export function AcademyShell({ navigation, children }: AcademyShellProps) {
         <div className="academy-brand">
           <p className="academy-brand__eyebrow">Cloud Assignment</p>
           <h1 className="academy-brand__title">Arcana Academy</h1>
-          <p className="academy-brand__subtitle">V3 Foundation</p>
+          <p className="academy-brand__subtitle">Modern Magical Learning</p>
         </div>
 
         <nav className="academy-nav">
-          {navigation.map((item, index) => {
-            const disabled = index > 0;
-
-            return disabled ? (
-              <div
-                className="academy-nav__item academy-nav__item--disabled"
-                key={item.label}
-                aria-disabled="true"
-                title={item.description}
-              >
-                <span className="academy-nav__symbol" aria-hidden="true">
-                  {item.symbol}
-                </span>
-                <span>
-                  <strong>{item.label}</strong>
-                  <small>Chưa mở</small>
-                </span>
-              </div>
-            ) : (
-              <NavLink className="academy-nav__item" to={item.href} key={item.label}>
-                <span className="academy-nav__symbol" aria-hidden="true">
-                  {item.symbol}
-                </span>
-                <span>
-                  <strong>{item.label}</strong>
-                  <small>{item.description}</small>
-                </span>
-              </NavLink>
-            );
-          })}
+          {navigation.map((item) => (
+            <NavLink className="academy-nav__item" to={item.href} key={item.href}>
+              <span className="academy-nav__symbol" aria-hidden="true">
+                {item.symbol}
+              </span>
+              <span>
+                <strong>{item.label}</strong>
+                <small>{item.description}</small>
+              </span>
+            </NavLink>
+          ))}
         </nav>
 
-        <div className="academy-sidebar__footer">
-          <span className="status-orb" aria-hidden="true" />
-          <span>Foundation specification frozen</span>
+        <div className="academy-user-card">
+          <span className="academy-user-card__avatar" aria-hidden="true">
+            {user?.fullName.charAt(0).toUpperCase() ?? 'A'}
+          </span>
+          <div>
+            <strong>{user?.fullName}</strong>
+            <small>{user?.role}</small>
+          </div>
+          <button type="button" onClick={handleLogout}>
+            Đăng xuất
+          </button>
         </div>
       </aside>
 

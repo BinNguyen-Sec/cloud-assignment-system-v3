@@ -1,0 +1,21 @@
+flowchart LR
+    A[Admin Browser]
+    T[Teacher Browser]
+    S[Student Browser]
+    FE[React Magical Academy Frontend]
+    API[ASP.NET Core API]
+    DB[(PostgreSQL)]
+    FS[(Cloud Object Storage)]
+    LOG[Cloud Logging]
+    SEC[Secret Manager]
+    CI[GitHub Actions]
+    A --> FE
+    T --> FE
+    S --> FE
+    FE -->|HTTPS + JWT| API
+    API --> DB
+    API --> FS
+    API --> LOG
+    API --> SEC
+    CI --> FE
+    CI --> API

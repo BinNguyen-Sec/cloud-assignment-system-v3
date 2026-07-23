@@ -35,18 +35,13 @@ export async function apiRequest<T>(
 
   const response = await fetch(buildApiUrl(path), {
     ...requestInit,
+    credentials: 'include',
     headers,
-    body:
-      body === undefined
-        ? undefined
-        : isFormData
-          ? body
-          : JSON.stringify(body),
+    body: body === undefined ? undefined : isFormData ? body : JSON.stringify(body),
   });
 
   if (!response.ok) {
-    const problem = await readProblemDetails(response);
-    throw new ApiError(response.status, problem);
+    throw new ApiError(response.status, await readProblemDetails(response));
   }
 
   if (response.status === 204) {
