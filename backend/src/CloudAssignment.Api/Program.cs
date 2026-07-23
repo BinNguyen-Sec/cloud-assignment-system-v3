@@ -164,6 +164,7 @@ app.MapGet("/api/v1/system/info", (IHostEnvironment environment) =>
 
 app.MapAuthEndpoints();
 app.MapRoleOverviewEndpoints();
+app.MapCourseEndpoints();
 
 app.MapHealthChecks("/health/live", new HealthCheckOptions
 {

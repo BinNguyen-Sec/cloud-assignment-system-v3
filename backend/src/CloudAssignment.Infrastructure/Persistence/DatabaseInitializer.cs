@@ -23,7 +23,7 @@ public sealed partial class DatabaseInitializer(
             if (!migrations.Any())
             {
                 throw new InvalidOperationException(
-                    "No EF Core migration was found. Run scripts/setup-auth-database.ps1 before starting the API.");
+                    "No EF Core migration was found. Run the current phase database setup script before starting the API.");
             }
 
             await dbContext.Database.MigrateAsync(cancellationToken);
@@ -43,7 +43,9 @@ public sealed partial class DatabaseInitializer(
         {
             new SeedUser("admin@arcana.local", "Quản trị Học viện", UserRole.Admin, null),
             new SeedUser("teacher@arcana.local", "Giảng viên Arcana", UserRole.Teacher, null),
-            new SeedUser("student@arcana.local", "Sinh viên Arcana", UserRole.Student, "23DH111550")
+            new SeedUser("student@arcana.local", "Sinh viên Arcana", UserRole.Student, "23DH111550"),
+            new SeedUser("student2@arcana.local", "Sinh viên Aurora", UserRole.Student, "23DH111551"),
+            new SeedUser("student3@arcana.local", "Sinh viên Celestia", UserRole.Student, "23DH111552")
         };
 
         foreach (var seed in seeds)

@@ -30,8 +30,8 @@ public static class RoleOverviewEndpoints
         return Results.Ok(new
         {
             user,
-            phase = "Authentication",
-            message = "Không gian học viện đã xác thực và sẵn sàng mở các module nghiệp vụ."
+            phase = "Course Management",
+            message = "Course Library, enrollment và Excel import đã sẵn sàng theo phạm vi vai trò."
         });
     }
 }

@@ -1,4 +1,4 @@
-﻿$ErrorActionPreference = 'Stop'
+$ErrorActionPreference = 'Stop'
 
 function Assert-Command {
     param(
@@ -38,6 +38,8 @@ function Invoke-NativeCommand {
 $RepoRoot = Split-Path -Parent $PSScriptRoot
 Set-Location $RepoRoot
 
+$NpmCommand = if ($env:OS -eq 'Windows_NT') { 'npm.cmd' } else { 'npm' }
+
 Write-Host "Checking required tools..." -ForegroundColor Cyan
 
 Assert-Command git
@@ -59,13 +61,13 @@ if (-not (Test-Path .env)) {
         -ForegroundColor Yellow
 }
 
-& .\scripts\setup-auth-database.ps1
+& .\scripts\setup-phase3-database.ps1
 
 Push-Location .\frontend\cloud-assignment-web
 
 try {
     Invoke-NativeCommand `
-        -FilePath 'npm' `
+        -FilePath $NpmCommand `
         -ArgumentList @('install') `
         -StepName 'Installing frontend dependencies...'
 }
@@ -73,13 +75,13 @@ finally {
     Pop-Location
 }
 
-Write-Host "Running Phase 2 verification..." `
+Write-Host "Running Phase 3 verification..." `
     -ForegroundColor Cyan
 
 & .\scripts\verify.ps1
 
 Write-Host ""
-Write-Host "Authentication bootstrap completed." `
+Write-Host "Course Management bootstrap completed." `
     -ForegroundColor Green
 
 Write-Host `

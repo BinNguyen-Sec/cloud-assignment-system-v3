@@ -1,4 +1,4 @@
-﻿$ErrorActionPreference = 'Stop'
+$ErrorActionPreference = 'Stop'
 
 function Invoke-NativeCommand {
     [CmdletBinding()]
@@ -26,6 +26,8 @@ function Invoke-NativeCommand {
 
 $RepoRoot = Split-Path -Parent $PSScriptRoot
 Set-Location $RepoRoot
+
+$NpmCommand = if ($env:OS -eq 'Windows_NT') { 'npm.cmd' } else { 'npm' }
 
 Invoke-NativeCommand `
     -FilePath 'dotnet' `
@@ -63,17 +65,17 @@ Push-Location .\frontend\cloud-assignment-web
 
 try {
     Invoke-NativeCommand `
-        -FilePath 'npm' `
+        -FilePath $NpmCommand `
         -ArgumentList @('run', 'typecheck') `
         -StepName 'Type-checking frontend...'
 
     Invoke-NativeCommand `
-        -FilePath 'npm' `
+        -FilePath $NpmCommand `
         -ArgumentList @('run', 'test') `
         -StepName 'Testing frontend...'
 
     Invoke-NativeCommand `
-        -FilePath 'npm' `
+        -FilePath $NpmCommand `
         -ArgumentList @('run', 'build') `
         -StepName 'Building frontend...'
 }
@@ -82,5 +84,5 @@ finally {
 }
 
 Write-Host ""
-Write-Host "All Phase 2 quality gates passed." `
+Write-Host "All Phase 3 quality gates passed." `
     -ForegroundColor Green

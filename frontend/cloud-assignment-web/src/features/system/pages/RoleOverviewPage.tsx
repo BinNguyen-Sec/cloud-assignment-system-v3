@@ -30,7 +30,7 @@ export function RoleOverviewPage() {
       <div className="academy-page">
         <header className="academy-hero role-hero">
           <div>
-            <p className="academy-kicker">Phase 2 · Authentication</p>
+            <p className="academy-kicker">Phase 3 · Course Management</p>
             <h2>Xin chào, {user.fullName}.</h2>
             <p>{overview?.message ?? 'Đang đồng bộ không gian học viện của bạn…'}</p>
           </div>
@@ -62,14 +62,14 @@ export function RoleOverviewPage() {
 
         <section className="architecture-panel next-module-panel">
           <div>
-            <p className="academy-kicker">Module kế tiếp</p>
-            <h3>Course Management + Excel Import</h3>
+            <p className="academy-kicker">Module đang hoạt động</p>
+            <h3>Course Library + Excel Import</h3>
             <p>
               Course Library, search, sort, filter, pagination, enrollment thủ công và import Excel
-              sẽ được giao thành một vertical slice hoàn chỉnh ở Phase 3.
+              đã được tách thành các trang nghiệp vụ độc lập.
             </p>
           </div>
-          <span className="phase-sigil" aria-hidden="true">III</span>
+          <span className="phase-sigil" aria-hidden="true">✓</span>
         </section>
       </div>
     </AcademyShell>

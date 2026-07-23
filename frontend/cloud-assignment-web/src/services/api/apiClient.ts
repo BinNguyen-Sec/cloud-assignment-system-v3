@@ -51,6 +51,30 @@ export async function apiRequest<T>(
   return (await response.json()) as T;
 }
 
+
+export async function apiDownload(
+  path: string,
+  accessToken: string,
+  options: RequestInit = {},
+): Promise<{ blob: Blob; fileName: string }> {
+  const headers = new Headers(options.headers);
+  headers.set('Authorization', `Bearer ${accessToken}`);
+  const response = await fetch(buildApiUrl(path), {
+    ...options,
+    credentials: 'include',
+    headers,
+  });
+
+  if (!response.ok) {
+    throw new ApiError(response.status, await readProblemDetails(response));
+  }
+
+  const disposition = response.headers.get('Content-Disposition') ?? '';
+  const match = /filename\*?=(?:UTF-8''|\")?([^\";]+)/i.exec(disposition);
+  const fileName = match ? decodeURIComponent(match[1].replace(/\"/g, '').trim()) : 'download.xlsx';
+  return { blob: await response.blob(), fileName };
+}
+
 async function readProblemDetails(response: Response): Promise<ProblemDetails> {
   try {
     return (await response.json()) as ProblemDetails;

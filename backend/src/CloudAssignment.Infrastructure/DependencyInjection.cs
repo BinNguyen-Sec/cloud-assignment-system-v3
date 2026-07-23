@@ -1,7 +1,9 @@
 using CloudAssignment.Application.Abstractions.Authentication;
+using CloudAssignment.Application.Abstractions.Importing;
 using CloudAssignment.Application.Abstractions.Persistence;
 using CloudAssignment.Application.Abstractions.Time;
 using CloudAssignment.Infrastructure.Authentication;
+using CloudAssignment.Infrastructure.Importing;
 using CloudAssignment.Infrastructure.Persistence;
 using CloudAssignment.Infrastructure.Time;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +33,7 @@ public static class DependencyInjection
         services.AddSingleton<IRefreshTokenService, RefreshTokenService>();
         services.AddSingleton<IClock, SystemClock>();
         services.AddScoped<DatabaseInitializer>();
+        services.AddSingleton<IStudentWorkbookService, ClosedXmlStudentWorkbookService>();
 
         services.AddOptions<JwtOptions>()
             .Bind(configuration.GetSection(JwtOptions.SectionName))
