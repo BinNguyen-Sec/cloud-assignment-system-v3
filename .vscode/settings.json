@@ -1,0 +1,10 @@
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "files.eol": "\n",
+  "files.trimTrailingWhitespace": true,
+  "typescript.tsdk": "frontend/cloud-assignment-web/node_modules/typescript/lib",
+  "dotnet.defaultSolution": "backend/CloudAssignment.sln"
+}

@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>CloudAssignment.Api</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CloudAssignment.Application\CloudAssignment.Application.csproj" />
+    <ProjectReference Include="..\CloudAssignment.Infrastructure\CloudAssignment.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+
+    <!--
+      Explicit direct reference prevents NuGet from resolving the vulnerable
+      Microsoft.OpenApi 2.0.0 transitive dependency.
+    -->
+    <PackageReference Include="Microsoft.OpenApi" />
+  </ItemGroup>
+</Project>

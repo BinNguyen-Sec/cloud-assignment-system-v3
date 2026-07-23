@@ -1,19 +1,64 @@
-# Cloud Assignment System V3 — Specification Pack
+# Cloud Assignment System V3
 
-**Status:** Frozen implementation contract  
-**Architecture:** Pragmatic Clean Architecture + Modular Monolith  
-**Frontend:** Modern Magical Academy  
-**Deployment direction:** Google Cloud–centered, cloud-agnostic code boundaries
+A clean rebuild of the cloud assignment platform using a pragmatic modular-monolith architecture and a bright **Modern Magical Academy** frontend.
 
-This pack is the source of truth before implementation. Each module must be delivered as one integrated vertical slice: database, backend, authorization, validation, frontend, tests, and manual verification.
+## Technology baseline
 
-## Locked rules
+- Backend: ASP.NET Core on .NET 10 LTS
+- Frontend: React 19 + TypeScript + Vite
+- Database: PostgreSQL 16
+- Local orchestration: Docker Compose
+- Tests: xUnit and Vitest
+- CI: GitHub Actions
 
-1. No role-specific all-in-one dashboard.
-2. No business logic inside controllers or React page components.
-3. No direct cloud SDK usage outside Infrastructure adapters.
-4. No UI control without a real backend flow.
-5. Search, sort, filter, pagination, loading, empty, and error states are part of the feature.
-6. Excel import always uses preview → confirm → result.
-7. Secrets never enter Git.
-8. V2 remains online as a rollback/demo backup until V3 passes regression.
+## Repository layout
+
+```text
+backend/
+  src/
+    CloudAssignment.Domain/
+    CloudAssignment.Application/
+    CloudAssignment.Infrastructure/
+    CloudAssignment.Api/
+  tests/
+    CloudAssignment.UnitTests/
+    CloudAssignment.IntegrationTests/
+frontend/
+  cloud-assignment-web/
+docker/
+docs/
+scripts/
+.github/workflows/
+```
+
+## Quick start on Windows
+
+1. Install Git, .NET 10 SDK, Node.js 24 LTS, Docker Desktop, and VS Code.
+2. Open PowerShell in the repository.
+3. Run:
+
+```powershell
+Set-ExecutionPolicy -Scope Process Bypass
+.\scripts\bootstrap.ps1
+```
+
+4. Start the API:
+
+```powershell
+dotnet run --project .\backend\src\CloudAssignment.Api
+```
+
+5. In another PowerShell window, start the frontend:
+
+```powershell
+cd .\frontend\cloud-assignment-web
+npm run dev
+```
+
+- Frontend: `http://localhost:5173`
+- API: `http://localhost:8080`
+- Live health: `http://localhost:8080/health/live`
+- Ready health: `http://localhost:8080/health/ready`
+- OpenAPI JSON in Development: `http://localhost:8080/openapi/v1.json`
+
+See `docs/SETUP_WINDOWS.md` for full instructions.

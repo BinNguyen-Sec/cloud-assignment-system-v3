@@ -1,0 +1,42 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# .NET
+**/bin/
+**/obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+TestResults/
+coverage/
+
+# Frontend
+**/node_modules/
+**/dist/
+**/.vite/
+*.tsbuildinfo
+
+# Editors and OS
+.vs/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local databases and containers
+postgres-data/
+
+# Temporary Google/GitHub credentials
+gha-creds-*.json
+
+# Logs
+*.log
+logs/
